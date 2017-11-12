@@ -16,7 +16,7 @@ class ExamplePanel(wx.Panel):
         grid = wx.GridBagSizer(hgap=5, vgap=5)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.webview = wx.html2.WebView.New(self,  size=(500,700))
+        self.webview = wx.html2.WebView.New(self,  size=(350,450))
 
         # data table
         self.table = wx.grid.Grid(self, size=(200,300))
@@ -70,7 +70,7 @@ class ExamplePanel(wx.Panel):
 
 
 app = wx.App(False)
-frame = wx.Frame(None, title="Python Basecamp Course - Demo")
+frame = wx.Frame(None, title="Python Basecamp Course - Demo", size=(600,800))
 
 ep = ExamplePanel(frame)
 frame.Show()
