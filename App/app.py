@@ -16,10 +16,10 @@ class ExamplePanel(wx.Panel):
         grid = wx.GridBagSizer(hgap=5, vgap=5)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.webview = wx.html2.WebView.New(self,  size=(350,450))
+        self.webview = wx.html2.WebView.New(self,  size=(340,390))
 
         # data table
-        self.table = wx.grid.Grid(self, size=(350,300))
+        self.table = wx.grid.Grid(self, size=(340,385))
         self.table.CreateGrid(0, 3)
         self.table.SetColLabelValue(0, "Id")
         self.table.SetColLabelValue(1, "Content")
@@ -34,31 +34,38 @@ class ExamplePanel(wx.Panel):
         self.btnrestorecanvas = wx.Button(self, label="Restore Canvas")
         self.Bind(wx.EVT_BUTTON, self.OnClickRestoreCanvas, self.btnrestorecanvas)
 
-        # the edit control - one line version.
+
+        sz = wx.BoxSizer(wx.HORIZONTAL)
+
         self.lblname = wx.StaticText(self, label="Http Url:")
-        grid.Add(self.lblname, pos=(1,0))
-        self.editname = wx.TextCtrl(self, value=os.environ.get("APP_COURSE_URL", "Your Url Here"), size=(140,-1))
-        grid.Add(self.editname, pos=(1,1))
+        self.editname = wx.TextCtrl(self, value=os.environ.get("APP_COURSE_URL", "Your Url Here"), size=(450,-1))
 
-        # A button
-        self.button_load = wx.Button(self, label="Load")
+        self.button_load = wx.Button(self, label="Load", size=(80, -1))
         self.Bind(wx.EVT_BUTTON, self.OnClickLoad, self.button_load)
-        grid.Add(self.button_load, pos=(1,2))
 
-        # add a spacer to the sizer
-        grid.Add((10, 40), pos=(2,0))
+        sz.Add(self.lblname, 0)
+        sz.Add(self.editname, 1, wx.EXPAND | wx.ALL)
+        sz.Add(self.button_load, 2, wx.SHAPED | wx.ALL)
+        mainSizer.Add(sz, 0, wx.TOP, 15)
 
-        grid.Add(self.table, pos=(3,0))
+
+
+        grid.Add(self.webview, pos=(1,0))
+        grid.Add(self.table, pos=(1,1))
 
         hSizer.Add(grid, 0, wx.ALL, 5)
-        hSizer.Add(self.webview)
-        mainSizer.Add(hSizer, 0, wx.ALL, 5)
-        mainSizer.Add(self.btnsavecanvas, 0, wx.CENTER)
-        mainSizer.Add(self.btnclearcanvas, 0, wx.CENTER)
-        mainSizer.Add(self.btnrestorecanvas, 0, wx.CENTER)
 
+
+        btnsizer = wx.BoxSizer(wx.HORIZONTAL)
+        btnsizer.Add(self.btnsavecanvas, 1)
+        btnsizer.Add(self.btnclearcanvas, 1)
+        btnsizer.Add(self.btnrestorecanvas, 1)
+
+        mainSizer.Add(hSizer, 1, wx.ALL, 1)
+        mainSizer.Add(btnsizer, 2, wx.ALL)
 
         self.SetSizerAndFit(mainSizer)
+
 
     def RefreshTable(self):
         rows = self.db.select_all()
@@ -94,7 +101,7 @@ class ExamplePanel(wx.Panel):
 
 
 app = wx.App(False)
-frame = wx.Frame(None, title="Python Basecamp Course - Demo", size=(600,800))
+frame = wx.Frame(None, title="Python Basecamp Course - Demo", size=(720,530))
 
 ep = ExamplePanel(frame)
 frame.Show()
