@@ -12,7 +12,8 @@ class Db(object):
              created_date DATETIME DEFAULT CURRENT_TIMESTAMP)''')
 
     def select_all(self):
-        self.c.fetchall()
+        self.c.execute("SELECT * FROM titles")
+        return self.c.fetchall()
 
     def insert(self, t):
-        self.c.execute('''INSERT INTO titles (title) VALUES (?)''', t)
+        return self.c.execute('''INSERT INTO titles (title) VALUES (?)''', t)

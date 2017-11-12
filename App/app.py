@@ -1,5 +1,6 @@
 import wx
 import wx.html2
+import wx.grid
 import fetch
 import Database.db
 
@@ -15,7 +16,11 @@ class ExamplePanel(wx.Panel):
         grid = wx.GridBagSizer(hgap=5, vgap=5)
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        self.webview = wx.html2.WebView.New(self,  size=(200,300))
+        self.webview = wx.html2.WebView.New(self,  size=(500,700))
+
+        # data table
+        self.table = wx.grid.Grid(self, size=(200,300))
+
 
         # A button
         self.button = wx.Button(self, label="Save")
@@ -24,7 +29,7 @@ class ExamplePanel(wx.Panel):
         # the edit control - one line version.
         self.lblname = wx.StaticText(self, label="Http Url:")
         grid.Add(self.lblname, pos=(1,0))
-        self.editname = wx.TextCtrl(self, value="Enter your url here", size=(140,-1))
+        self.editname = wx.TextCtrl(self, value="file:///Users/gon/projects/python-basecamp-course/js-page/index.html", size=(140,-1))
         grid.Add(self.editname, pos=(1,1))
 
         # A button
@@ -35,6 +40,8 @@ class ExamplePanel(wx.Panel):
         # add a spacer to the sizer
         grid.Add((10, 40), pos=(2,0))
 
+        grid.Add(self.table, pos=(3,0))
+
         hSizer.Add(grid, 0, wx.ALL, 5)
         hSizer.Add(self.webview)
         mainSizer.Add(hSizer, 0, wx.ALL, 5)
@@ -42,7 +49,20 @@ class ExamplePanel(wx.Panel):
         self.SetSizerAndFit(mainSizer)
 
     def OnClick(self, obj):
-        print "Clicked" + str(obj)
+        rows = self.db.select_all()
+
+        self.table.CreateGrid(len(rows), 3)
+
+        self.table.SetColLabelValue(0, "First")
+        self.table.SetColLabelValue(1, "Middle")
+        self.table.SetColLabelValue(2, "Last")
+
+        print self.webview.GetSelectedText()
+
+        for i, row in enumerate(rows):
+            for j, val in enumerate(row):
+                self.table.SetCellValue(i, j, str(val))
+
 
     def OnClickLoad(self, event):
         print self.editname.Value
@@ -50,7 +70,7 @@ class ExamplePanel(wx.Panel):
 
 
 app = wx.App(False)
-frame = wx.Frame(None, title="Demo with Notebook")
+frame = wx.Frame(None, title="Python Basecamp Course - Demo")
 
 ep = ExamplePanel(frame)
 frame.Show()
