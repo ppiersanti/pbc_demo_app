@@ -19,7 +19,7 @@ class ExamplePanel(wx.Panel):
         self.webview = wx.html2.WebView.New(self,  size=(350,450))
 
         # data table
-        self.table = wx.grid.Grid(self, size=(200,300))
+        self.table = wx.grid.Grid(self, size=(350,300))
 
         self.btnsavecanvas = wx.Button(self, label="Save Canvas")
         self.Bind(wx.EVT_BUTTON, self.OnClickSaveCanvas,self.btnsavecanvas)
