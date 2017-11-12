@@ -3,6 +3,7 @@ import wx.html2
 import wx.grid
 import fetch
 import Database.db
+import os
 
 class ExamplePanel(wx.Panel):
     def __init__(self, parent):
@@ -32,7 +33,7 @@ class ExamplePanel(wx.Panel):
         # the edit control - one line version.
         self.lblname = wx.StaticText(self, label="Http Url:")
         grid.Add(self.lblname, pos=(1,0))
-        self.editname = wx.TextCtrl(self, value="file:///Users/gon/projects/python-basecamp-course/js-page/index.html", size=(140,-1))
+        self.editname = wx.TextCtrl(self, value=os.environ.get("APP_COURSE_URL", "Your Url Here"), size=(140,-1))
         grid.Add(self.editname, pos=(1,1))
 
         # A button
