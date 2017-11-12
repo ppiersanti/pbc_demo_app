@@ -20,6 +20,10 @@ class ExamplePanel(wx.Panel):
 
         # data table
         self.table = wx.grid.Grid(self, size=(350,300))
+        self.table.CreateGrid(0, 3)
+        self.table.SetColLabelValue(0, "Id")
+        self.table.SetColLabelValue(1, "Content")
+        self.table.SetColLabelValue(2, "Date")
 
         self.btnsavecanvas = wx.Button(self, label="Save Canvas")
         self.Bind(wx.EVT_BUTTON, self.OnClickSaveCanvas,self.btnsavecanvas)
@@ -58,13 +62,10 @@ class ExamplePanel(wx.Panel):
 
     def RefreshTable(self):
         rows = self.db.select_all()
-        self.table.CreateGrid(len(rows), 3)
-        self.table.SetColLabelValue(0, "Id")
-        self.table.SetColLabelValue(1, "Content")
-        self.table.SetColLabelValue(2, "Date")
         for i, row in enumerate(rows):
             for j, val in enumerate(row):
                 self.table.SetCellValue(i, j, str(val))
+
 
     def OnClickLoad(self, event):
         print self.editname.Value
@@ -73,6 +74,7 @@ class ExamplePanel(wx.Panel):
     def OnClickSaveCanvas(self, event):
         self.webview.RunScript("document.getElementById('btn_export').click();")
         self.db.insert((self.webview.GetSelectedText(),))
+        self.table.AppendRows()
         self.RefreshTable()
 
     def OnClickClearCanvas(self, event):
