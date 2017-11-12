@@ -6,14 +6,22 @@ class Db(object):
         self.c = self.conn.cursor()
 
         # Create table
-        self.c.execute('''CREATE TABLE titles
+        self.c.execute('''CREATE TABLE drawings
              (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-             title TEXT,
+             content TEXT,
              created_date DATETIME DEFAULT CURRENT_TIMESTAMP)''')
 
     def select_all(self):
-        self.c.execute("SELECT * FROM titles")
+        self.c.execute("SELECT * FROM drawings")
         return self.c.fetchall()
 
     def insert(self, t):
-        return self.c.execute('''INSERT INTO titles (title) VALUES (?)''', t)
+        return self.c.execute('''INSERT INTO drawings (content) VALUES (?)''', t)
+
+    def last(self):
+        self.c.execute('''\
+        SELECT id, content, created_date
+        FROM drawings
+        ORDER BY id DESC
+        LIMIT 1''')
+        return self.c.fetchone()
